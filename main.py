@@ -22,6 +22,7 @@ def validate_yes_no(input_str):
     elif input_str.lower() in ["n", "no"]:
         return True
     else:
+        print("Please enter Y or N.")
         return None 
     
 def validate_int_input(input_str):
@@ -66,9 +67,12 @@ def main():
     method = get_user_input("Method (1): ", "1", validate_int_input)
 
     use_dca = False
-
-    if get_user_input(f"Would you like to use DCAs for ensamble? (Cast on 1, Ensemble on 2) (Y/N): ", "N", validate_yes_no) == True:
+    dca_identifier = None
+    
+    if get_user_input(f"Would you like to use DCAs for ensamble? (Cast on 1, Ensemble on 2) (Y/N): ", "N", validate_yes_no) in ["Y", "y", "Yes", "yes"]:
         use_dca = True
+
+        dca_identifier = get_user_input("DCA Identifier (-): ", "-")
     else:
         use_dca = False
 
@@ -76,7 +80,7 @@ def main():
     data_frame = read_excel_data(xlsx_file, skip_rows)
 
     if method == "1":
-        generate_snippets(data_frame, show_file_name, "output", identifying_character, use_dca)
+        generate_snippets(data_frame, show_file_name, "output", identifying_character, use_dca, dca_identifier)
     else:
         midi_patch = get_user_input("MIDI Patch (1): ", "1", validate_int_input)
 

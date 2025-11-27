@@ -2,7 +2,7 @@ import sys
 from file_handler import write_snippet_file, write_show_file, create_output_directory
 import pandas
 
-def generate_snippets(data_frame, show_file_name, output_directory, identifying_character, use_dca):
+def generate_snippets(data_frame, show_file_name, output_directory, identifying_character, use_dca, dca_identifier):
     create_output_directory(output_directory)
 
     first_integer_column = find_first_integer_column(data_frame)
@@ -21,7 +21,7 @@ def generate_snippets(data_frame, show_file_name, output_directory, identifying_
         shw_content += generate_cue_entry(snippet_index_formatted, cue_index_formatted, cue_number)
         snippet_list += generate_snippet_list_entry(snippet_index_formatted, snippet)
 
-        snippet_content = generate_snippet_content(data_frame, snippet, identifying_character, use_dca)
+        snippet_content = generate_snippet_content(data_frame, snippet, identifying_character, use_dca, dca_identifier)
         file_name = f"Q{pad_index(str(snippet))}.snp"
         write_snippet_file(output_directory, file_name, snippet_content)
 
@@ -67,16 +67,16 @@ def generate_cue_entry(snippet_index_formatted, cue_index_formatted, cue_number)
 def generate_snippet_list_entry(snippet_index_formatted, snippet):
     return f'snippet/{snippet_index_formatted} "Q{pad_index(str(snippet))}" 128 131071 0 0 1\n'
 
-def generate_snippet_content(data_frame, snippet, identifying_character, use_dca):
+def generate_snippet_content(data_frame, snippet, identifying_character, use_dca, dca_identifier="-"):
     snippet_content = f'#4.0# "Q{pad_index(str(snippet))}" 128 131071 0 0 1\n'
     for _, row in data_frame.iterrows():
         if not row.iloc[0]:
             continue
 
         mic_num = int(row.iloc[0])
-        unmuted = (pandas.notna(row[snippet]) and row[snippet] == identifying_character) or (pandas.notna(row[snippet]) and row[snippet] == "-")
+        unmuted = (pandas.notna(row[snippet]) and row[snippet] == identifying_character) or (pandas.notna(row[snippet]) and row[snippet] == dca_identifier)
 
-        isQuiet = pandas.notna(row[snippet]) and row[snippet] == "-"
+        isQuiet = pandas.notna(row[snippet]) and row[snippet] == dca_identifier
 
         mute_state = "ON" if unmuted else "OFF"
         formatted_snippet = str(mic_num).zfill(2)
