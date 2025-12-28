@@ -1,6 +1,6 @@
 from file_handler import read_excel_data
 from snippet_generator import generate_snippets
-from qlab_generator import generate_cues
+from qlab_network_generator import generate_network_cues
 import os
 
 def locate_xlsx_files():
@@ -68,23 +68,24 @@ def main():
 
     use_dca = False
     dca_identifier = None
-    
+
+    show_file_name = xlsx_file.replace(".xlsx", "")
+    data_frame = read_excel_data(xlsx_file, skip_rows)
+
     if get_user_input(f"Would you like to use DCAs for ensamble? (Cast on 1, Ensemble on 2) (Y/N): ", "N", validate_yes_no) in ["Y", "y", "Yes", "yes"]:
         use_dca = True
 
         dca_identifier = get_user_input("DCA Identifier (-): ", "-")
     else:
         use_dca = False
-
-    show_file_name = xlsx_file.replace(".xlsx", "")
-    data_frame = read_excel_data(xlsx_file, skip_rows)
-
+        
     if method == "1":
+
+            
         generate_snippets(data_frame, show_file_name, "output", identifying_character, use_dca, dca_identifier)
     else:
-        midi_patch = get_user_input("MIDI Patch (1): ", "1", validate_int_input)
-
-        generate_cues(data_frame, identifying_character, midi_patch)
+        network_patch = get_user_input("Network Patch (1): ", "1", validate_int_input)
+        generate_network_cues(data_frame, identifying_character, dca_identifier, network_patch)
 
 
 if __name__ == "__main__":
