@@ -6,3 +6,5 @@ output/
 pyvenv.cfg
 *.xlsx
 .DS_Store
+.venv/
+.python-version
