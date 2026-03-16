@@ -48,21 +48,25 @@ def get_first_numeric_column(data_frame):
 
 import os
 
-def create_cue(cue_name, cue_number, channels_to_unmute, channels_ensemble_bus, max_channels, network_patch=1):
-    channel_unmute_string = "{" + ", ".join(str(channel) for channel in channels_to_unmute) + "}"
-    channel_ensemble_string = "{" + ", ".join(str(channel) for channel in channels_ensemble_bus) + "}"
-    
-    script_path = os.path.join(os.path.dirname(__file__), "applescript/network.applescript")
-    with open(script_path, "r") as file:
-        script_template = file.read()
+def create_cue(cue_name, cue_number, channels_to_unmute, channels_ensemble_bus, max_channels, type, network_patch=1):
+    if type == "X32":
+        channel_unmute_string = "{" + ", ".join(str(channel) for channel in channels_to_unmute) + "}"
+        channel_ensemble_string = "{" + ", ".join(str(channel) for channel in channels_ensemble_bus) + "}"
+        
+        script_path = os.path.join(os.path.dirname(__file__), "applescript/x32-network.applescript")
+        with open(script_path, "r") as file:
+            script_template = file.read()
 
-    final_script = (script_template
-                    .replace("{{MAX_CHANNELS}}", str(max_channels))
-                    .replace("{{CHANNELS_TO_UNMUTE}}", channel_unmute_string)
-                    .replace("{{CHANNELS_ENSEMBLE_BUS}}", channel_ensemble_string)
-                    .replace("{{CUE_NAME}}", str(cue_name))
-                    .replace("{{CUE_NUMBER}}", str(cue_number))
-                    .replace("{{NETWORK_PATCH}}", str(network_patch)))
+        final_script = (script_template
+                        .replace("{{MAX_CHANNELS}}", str(max_channels))
+                        .replace("{{CHANNELS_TO_UNMUTE}}", channel_unmute_string)
+                        .replace("{{CHANNELS_ENSEMBLE_BUS}}", channel_ensemble_string)
+                        .replace("{{CUE_NAME}}", str(cue_name))
+                        .replace("{{CUE_NUMBER}}", str(cue_number))
+                        .replace("{{NETWORK_PATCH}}", str(network_patch)))
+    elif type == "SQ":
+        mute_on = "B{} 63 00 B{} 62 00 B0 06 00 B0 26 01"
+        pass
 
     stdout, stderr = run_apple_script(final_script)
     
