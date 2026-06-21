@@ -2,7 +2,7 @@ import subprocess
 import pandas
 import sys
 
-def generate_network_cues(data_frame, identifying_character, dca_identifier, network_patch):
+def generate_network_cues(data_frame, identifying_character, dca_identifier, mixer_type, network_patch):
     cue_number = 0
 
     first_column = get_first_numeric_column(data_frame)
@@ -13,7 +13,7 @@ def generate_network_cues(data_frame, identifying_character, dca_identifier, net
     for cue in data_frame.columns[first_column:]:
         channels_to_unmute, channels_to_mute, channels_ensemble_bus = get_channel_mute_data(data_frame, cue, identifying_character, dca_identifier)
         
-        create_cue(("Q" + str(cue)), str(cue), channels_to_unmute, channels_ensemble_bus, str(len(channels_to_unmute) + len(channels_to_mute)), network_patch)
+        create_cue(("Q" + str(cue)), str(cue), channels_to_unmute, channels_ensemble_bus, str(len(channels_to_unmute) + len(channels_to_mute)), mixer_type, network_patch)
 
         percent = round(((cue_number + 1) / total_cues) * 100)
         sys.stdout.write("\033[K") 

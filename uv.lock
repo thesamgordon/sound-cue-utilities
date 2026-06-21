@@ -234,26 +234,14 @@ name = "x32-cue-utilities"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
-    { name = "dotenv" },
-    { name = "et-xmlfile" },
-    { name = "numpy" },
     { name = "openpyxl" },
     { name = "pandas" },
-    { name = "python-dateutil" },
-    { name = "pytz" },
-    { name = "six" },
-    { name = "tzdata" },
+    { name = "python-dotenv" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "dotenv", specifier = ">=0.9.9" },
-    { name = "et-xmlfile", specifier = "==2.0.0" },
-    { name = "numpy", specifier = "==2.4.2" },
     { name = "openpyxl", specifier = "==3.1.5" },
     { name = "pandas", specifier = "==3.0.0" },
-    { name = "python-dateutil", specifier = "==2.9.0.post0" },
-    { name = "pytz", specifier = "==2025.2" },
-    { name = "six", specifier = "==1.17.0" },
-    { name = "tzdata", specifier = "==2025.3" },
+    { name = "python-dotenv", specifier = "==1.2.2" },
 ]
