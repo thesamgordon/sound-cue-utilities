@@ -32,6 +32,13 @@ With the default config:
 
 ## Setup
 
+Clone the repository:
+
+```sh
+git clone https://github.com/thesamgordon/sound-cue-utilities.git
+cd sound-cue-utilities
+```
+
 Install `uv` if needed:
 
 ```sh
